@@ -79,5 +79,5 @@ jobs:
             python -m pip install --upgrade pip
             python -m pip install flake8 pytest
             if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-            mlserver build -t ${{ steps.meta.outputs.tags }}:${{ steps.meta.outputs.labels }}
+            mlserver build -t ${{ steps.meta.outputs.tags }}:${{ steps.meta.outputs.labels }} .
             docker image push ${{ steps.meta.outputs.tags }}:${{ steps.meta.outputs.labels }}
