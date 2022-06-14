@@ -10,6 +10,12 @@ on:
 
 jobs:
 
+  tests-before-publish:
+    name: Test before publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/workflows/tests
+
   deploy-package:
     runs-on: ubuntu-latest
     steps:
