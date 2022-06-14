@@ -54,5 +54,21 @@ For example script see below files:
 /example/rest-example.py
 ```
 
-
 # Kserve usage
+1. First create one time kserver runtime from file: kserve/cluster-runtime.yaml
+2. Create InferenceService from template:
+```yaml
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "html-elements-cookies-nn-words-and-attributes"
+spec:
+  predictor:
+    model:
+      modelFormat:
+        name: xgboost
+      runtime: kserve-mlserver-openvino
+      #storageUri: "gs://kfserving-examples/models/xgboost/iris"
+      storageUri: https://github.com/tduffy000/kfserving-uri-examples/blob/master/sklearn/frozen/model.joblib?raw=true
+
+```
