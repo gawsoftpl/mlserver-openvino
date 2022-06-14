@@ -80,5 +80,5 @@ jobs:
             python -m pip install --upgrade pip
             python -m pip install flake8 pytest
             if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-            mlserver build -t gawsoft/mlserver-openvino:${{ VERSION }} .
-            docker image push gawsoft/mlserver-openvino:${{ VERSION }}
+            mlserver build -t gawsoft/mlserver-openvino:$VERSION .
+            docker image push gawsoft/mlserver-openvino:$VERSION
