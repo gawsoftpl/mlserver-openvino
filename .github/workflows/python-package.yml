@@ -10,15 +10,15 @@ on:
 
 jobs:
 
-  tests-before-publish:
-    name: Test before publish
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ./.github/workflows/tests
+#  tests-before-publish:
+#    name: Test before publish
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: ./.github/workflows/tests.yml
 
   deploy-package:
     runs-on: ubuntu-latest
-    needs: tests-before-publish
+    #needs: tests-before-publish
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
