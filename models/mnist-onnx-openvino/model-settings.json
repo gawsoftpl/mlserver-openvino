@@ -1,0 +1,22 @@
+{
+    "name": "mnist-onnx-openvino",
+    "implementation": "mlserver_openvino.OpenvinoRuntime",
+    "parameters": {
+        "uri": "./model.onnx",
+        "version": "v0.1.0"
+    },
+    "inputs": [
+        {
+            "name": "input-0",
+            "datatype": "FP32",
+            "shape": [-1,28,28,1]
+        }
+    ],
+    "outputs": [
+        {
+            "name": "output",
+            "datatype": "FP32",
+            "shape": [-1,10]
+        }
+    ]
+}
