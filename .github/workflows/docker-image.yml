@@ -1,0 +1,21 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+            VERSION=`python -c "from mlserver_openvino.version import __version__;print(__version__)"`
+            docker build . --file Dockerfile --tag gawsoft/mlserver-openvino:$VERSION
+
