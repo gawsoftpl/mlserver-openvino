@@ -75,10 +75,10 @@ jobs:
         images: gawsoft/mlserver-openvino
     - name: Build the Docker image
       run: |
-            echo ${{ steps.meta.outputs.tags }}:${{ steps.meta.outputs.labels }}
+            VERSION=0.1.0
             export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
             python -m pip install --upgrade pip
             python -m pip install flake8 pytest
             if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-            mlserver build -t ${{ steps.meta.outputs.tags }}:${{ steps.meta.outputs.labels }} .
-            docker image push ${{ steps.meta.outputs.tags }}:${{ steps.meta.outputs.labels }}
+            mlserver build -t gawsoft/mlserver-openvino:${{ VERSION }} .
+            docker image push gawsoft/mlserver-openvino:${{ VERSION }}
