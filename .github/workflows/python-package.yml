@@ -4,8 +4,9 @@
 name: Python package
 
 on:
-  tags:
-    - 'v*'
+  push:
+    tags:
+    - '*'
 
 jobs:
   release:
