@@ -98,5 +98,5 @@ class OpenvinoRuntime(MLModel):
     command = f"mo --input_model \"{file_path}\" --input_shape={','.join(inputs_dim)} --input={','.join(inputs_names)} --output output --output_dir \"{output_path}\" --model_name \"onnx_model\""
     os.system(command)
 
-    return os.path.join(output_path, 'onnx_model.xml')
+    return os.path.join(output_path, 'model.xml')
 
