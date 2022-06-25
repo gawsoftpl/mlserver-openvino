@@ -66,7 +66,7 @@ spec:
   predictor:
     model:
       modelFormat:
-        name: xgboost
+        name: openvino
       runtime: kserve-mlserver-openvino
       #storageUri: "gs://kfserving-examples/models/xgboost/iris"
       storageUri: https://github.com/myrepo/models/mymodel.joblib?raw=true
