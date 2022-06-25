@@ -74,7 +74,7 @@ class OpenvinoRuntime(MLModel):
     return payload
 
   @classmethod
-  def convert_onnx(cls, file_path):
+  def convert_onnx(cls, file_path, output_path='/tmp/openvino'):
     '''
     Convert onnx file to openvino format
     :param file_path: str path to onnx file
@@ -91,13 +91,12 @@ class OpenvinoRuntime(MLModel):
       inputs_dim.append('[' + ",".join(dims) + ']')
 
     # Create dir in tmp
-    openvino_path = '/tmp/openvino'
-    if not os.path.exists(openvino_path):
-      os.makedirs(openvino_path)
+    if not os.path.exists(output_path):
+      os.makedirs(output_path)
 
     # Command
-    command = f"mo --input_model \"{file_path}\" --input_shape={','.join(inputs_dim)} --input={','.join(inputs_names)} --output output --output_dir \"{openvino_path}\" --model_name \"onnx_model\""
+    command = f"mo --input_model \"{file_path}\" --input_shape={','.join(inputs_dim)} --input={','.join(inputs_names)} --output output --output_dir \"{output_path}\" --model_name \"onnx_model\""
     os.system(command)
 
-    return os.path.join(openvino_path, 'onnx_model.xml')
+    return os.path.join(output_path, 'onnx_model.xml')
 
