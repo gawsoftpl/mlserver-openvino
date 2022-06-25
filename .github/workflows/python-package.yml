@@ -61,7 +61,7 @@ jobs:
             docker image tag convert-onnx-to-openvino gawsoft/mlserver-openvino-onnx-converter:$VERSION
             docker image push gawsoft/mlserver-openvino-onnx-converter:$VERSION
             # Publish latest
-            docker image tag gawsoft/mlserver-openvino-onnx-converter:$VERSION gawsoft/mlserver-openvino:latest
+            docker image tag gawsoft/mlserver-openvino-onnx-converter:$VERSION gawsoft/mlserver-openvino-onnx-converter:latest
             docker image push gawsoft/mlserver-openvino-onnx-converter:latest
         
 
