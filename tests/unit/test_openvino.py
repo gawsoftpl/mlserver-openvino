@@ -8,8 +8,8 @@ test_path = os.path.dirname(__file__)
 
 def test_convert_onnx_to_openvino():
     OpenvinoRuntime.convert_onnx(os.path.join(test_path, '../test-data/model-nn.onnx'))
-    assert os.path.exists('/tmp/openvino/onnx_model.xml')
-    assert os.path.exists('/tmp/openvino/onnx_model.bin')
+    assert os.path.exists('/tmp/openvino/model.xml')
+    assert os.path.exists('/tmp/openvino/model.bin')
 
 @pytest.mark.asyncio
 async def test_load_model(model: OpenvinoRuntime):
