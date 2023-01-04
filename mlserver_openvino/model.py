@@ -62,9 +62,7 @@ class OpenvinoRuntime(MLModel):
       except ValueError:
         raise InferenceError(f"Cant find output with name {request_output.name}")
 
-
     return outputs
-
 
   def _check_request(self, payload: InferenceRequest) -> InferenceResponse:
     for inp in payload.inputs:

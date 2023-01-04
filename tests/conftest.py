@@ -11,6 +11,7 @@ TEST_PATH = os.path.dirname(__file__)
 def model_settings() -> ModelSettings:
     return ModelSettings(
         name="ensemble-model",
+        implementation="mlserver_openvino.OpenvinoRuntime",
         parameters=ModelParameters(
             version="v1.2.3",
             uri=os.path.join(TEST_PATH, 'test-data/model-nn.onnx'),
