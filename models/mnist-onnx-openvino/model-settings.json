@@ -3,7 +3,21 @@
     "implementation": "mlserver_openvino.OpenvinoRuntime",
     "parameters": {
         "uri": "./model.onnx",
-        "version": "v0.1.0"
+        "version": "v0.1.0",
+        "extra": {
+            "transform": [
+                {
+                    "name": "Prepare Metadata",
+                    "pipeline_file_path": "pipeline_meta.joblib",
+                    "input_index": 0
+                },
+                {
+                    "name": "Prepare tags",
+                    "pipeline_file_path": "pipeline_tags.joblib",
+                    "input_index": 1
+                }
+            ]
+        }
     },
     "inputs": [
         {

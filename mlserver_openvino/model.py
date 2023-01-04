@@ -6,8 +6,8 @@ import os
 from openvino.runtime import Core
 import onnx
 from mlserver.utils import get_model_uri
-from typing import List
-
+from typing import List, Dict, Any
+from .transformer import Transformer
 # Dont remove this, This line load and auto register custom requests codecs
 from .codecs import NumpyGzipCodec, JSONGzippedBase64Codec
 
@@ -35,8 +35,26 @@ class OpenvinoRuntime(MLModel):
     self.compiled_model_int8 = self.core.compile_model(model=self._model, device_name="CPU")
     self.model_inputs = [list(inp.names)[0] for inp in self.compiled_model_int8.inputs]
     self.model_outputs = [list(inp.names)[0] for inp in self.compiled_model_int8.outputs]
+    self.transformers: List[Transformer] = self._load_transformers()
+    self.has_transformers = len(self.transformers) > 0
 
     return await super().load()
+
+  def _load_transformers(self) -> List[Transformer]:
+    if 'transform' not in self.settings.parameters.extra or len(self.settings.parameters.extra['transform']) == 0:
+      return []
+
+    transformers = []
+    for pipeline in self.settings.parameters.extra['transform']:
+      transformers.append(
+        Transformer(
+          pipeline['pipeline_file_path'],
+          pipeline['name'],
+          pipeline['input_index']
+        )
+      )
+
+    return transformers
 
   async def predict(self, payload: InferenceRequest) -> InferenceResponse:
     payload = self._check_request(payload)
@@ -52,7 +70,9 @@ class OpenvinoRuntime(MLModel):
   def _get_model_outputs(self, payload: InferenceRequest) -> List[ResponseOutput]:
     for request_output in payload.outputs:
       try:
-        X = [self.decode(inp, default_codec=NumpyCodec) for inp in payload.inputs]
+        X = self._preprocessing(
+          [self.decode(inp, default_codec=NumpyCodec) for inp in payload.inputs]
+        )
 
         outputs = []
         output_layer_index = self.model_outputs.index(request_output.name)
@@ -64,6 +84,18 @@ class OpenvinoRuntime(MLModel):
         raise InferenceError(f"Cant find output with name {request_output.name}")
 
     return outputs
+
+  def _preprocessing(self, X: List) -> List:
+    if self.has_transformers:
+      return self._execute_transform_pipeline(X)
+
+    return X
+
+  def _execute_pipeline(self, X:List) -> List:
+    for tranformer_pipeline in self.transformers:
+      X = tranformer_pipeline.transform(X)
+
+    return X
 
   def _check_request(self, payload: InferenceRequest) -> InferenceResponse:
     for inp in payload.inputs:
