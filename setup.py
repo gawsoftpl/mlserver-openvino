@@ -27,6 +27,7 @@ def _load_description() -> str:
 
 setup(
     name=PKG_NAME,
+    python_requires='>=3.8',
     version=_load_version(),
     url="https://github.com/gawsoftpl/mlserver-openvino",
     author="Gawsoft",
