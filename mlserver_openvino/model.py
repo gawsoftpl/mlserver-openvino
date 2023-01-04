@@ -8,6 +8,9 @@ import onnx
 from mlserver.utils import get_model_uri
 from typing import List
 
+# Dont remove this, This line load and auto register custom requests codecs
+from .codecs import NumpyGzipCodec, JSONGzippedBase64Codec
+
 WELLKNOWN_MODEL_FILENAMES = ["model.xml", "model.onnx"]
 
 class OpenvinoRuntime(MLModel):
@@ -37,7 +40,6 @@ class OpenvinoRuntime(MLModel):
 
   async def predict(self, payload: InferenceRequest) -> InferenceResponse:
     payload = self._check_request(payload)
-
     outputs = self._get_model_outputs(payload)
 
     return InferenceResponse(
@@ -53,7 +55,6 @@ class OpenvinoRuntime(MLModel):
         X = [self.decode(inp, default_codec=NumpyCodec) for inp in payload.inputs]
 
         outputs = []
-
         output_layer_index = self.model_outputs.index(request_output.name)
         y = self.compiled_model_int8(inputs=X)[self.compiled_model_int8.outputs[output_layer_index]]
 

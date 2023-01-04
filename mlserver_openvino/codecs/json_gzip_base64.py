@@ -12,7 +12,7 @@ class JSONGzippedBase64Codec(Base64Codec):
 
     @classmethod
     def can_encode(cls, payload: Any) -> bool:
-        return True
+        return False
 
     @classmethod
     def decode_input(cls, request_input: RequestInput) -> Any:  # type: ignore

@@ -1,2 +1,2 @@
-from .json_gzip_base64 import *
+from .json_gzip_base64 import JSONGzippedBase64Codec
 from .numpy_gzip import NumpyGzipCodec

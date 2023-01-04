@@ -9,14 +9,14 @@
         {
             "name": "input-0",
             "datatype": "FP32",
-            "shape": [-1,28,28,1]
+            "shape": [28,28,1]
         }
     ],
     "outputs": [
         {
             "name": "output",
             "datatype": "FP32",
-            "shape": [-1,10]
+            "shape": [10]
         }
     ]
 }
