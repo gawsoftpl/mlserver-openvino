@@ -72,3 +72,39 @@ spec:
       storageUri: https://github.com/myrepo/models/mymodel.joblib?raw=true
 
 ```
+
+## Example model-settings.json
+```json
+{
+    "name": "mnist-onnx-openvino",
+    "implementation": "mlserver_openvino.OpenvinoRuntime",
+    "parameters": {
+        "uri": "./model.onnx",
+        "version": "v0.1.0",
+        "extra": {
+            "transform": [
+                {
+                    "name": "Prepare Metadata",
+                    "pipeline_file_path": "./pipeline.cloudpickle",
+                    "input_index": 0
+                }
+            ]
+        }
+    },
+    "inputs": [
+        {
+            "name": "input-0",
+            "datatype": "FP32",
+            "shape": [28,28,1]
+        }
+    ],
+    "outputs": [
+        {
+            "name": "output",
+            "datatype": "FP32",
+            "shape": [10]
+        }
+    ]
+}
+
+```
