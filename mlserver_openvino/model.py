@@ -82,6 +82,7 @@ class OpenvinoRuntime(MLModel):
 
         outputs = []
         output_layer_index = self.model_outputs.index(request_output.name)
+
         y = self.compiled_model_int8(inputs=X)[self.compiled_model_int8.outputs[output_layer_index]]
 
         output = self.encode(y, request_output, default_codec=NumpyCodec)

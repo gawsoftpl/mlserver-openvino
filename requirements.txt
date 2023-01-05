@@ -7,3 +7,4 @@ grpcio>=1.47.0
 joblib>=1.2.0
 cloudpickle>=2.2.0
 scikit-learn>=1.2.0
+Keras-Preprocessing>=1.1.2

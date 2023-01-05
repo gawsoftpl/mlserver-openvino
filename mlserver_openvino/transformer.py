@@ -4,7 +4,6 @@ import cloudpickle
 import pickle
 import gzip
 
-
 class Transformer:
     '''
     Transform input for specific input index
