@@ -2,6 +2,7 @@ from typing import List
 import joblib
 import cloudpickle
 import pickle
+import gzip
 
 
 class Transformer:
@@ -17,7 +18,7 @@ class Transformer:
         self._load()
 
     def _load(self):
-        if self._file_path.endswith('cloudpickle'):
+        if 'cloudpickle' in self._file_path:
             self._load_cloudpickle()
         elif self._file_path.endswith('pickle'):
             self._load_pickle()
@@ -29,8 +30,12 @@ class Transformer:
             self._pipeline = pickle.load(f)
 
     def _load_cloudpickle(self):
-        with open(self._file_path,"rb") as f:
-            self._pipeline = cloudpickle.load(f)
+        if self._file_path.endswith('.gz'):
+            with gzip.open(self._file_path, 'rb') as f:
+                self._pipeline = cloudpickle.load(f)
+        else:
+            with open(self._file_path, "rb") as f:
+                self._pipeline = cloudpickle.load(f)
 
     def _load_joblib(self):
         self._pipeline = joblib.load(self._file_path)

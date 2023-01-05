@@ -1,5 +1,5 @@
 import sys
-from model import OpenvinoRuntime
+from mlserver_openvino import OpenvinoRuntime
 
 if __name__ == '__main__':
     print("Start converting")

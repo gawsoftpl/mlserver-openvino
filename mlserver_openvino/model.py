@@ -6,7 +6,7 @@ import os
 from openvino.runtime import Core
 import onnx
 from mlserver.utils import get_model_uri
-from typing import List, Dict, Any
+from typing import List
 from .transformer import Transformer
 
 # Dont remove this, This line load and auto register custom requests codecs
