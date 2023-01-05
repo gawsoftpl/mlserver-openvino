@@ -1,5 +1,8 @@
 from typing import List
 import joblib
+import cloudpickle
+import pickle
+
 
 class Transformer:
     '''
@@ -14,6 +17,22 @@ class Transformer:
         self._load()
 
     def _load(self):
+        if self._file_path.endswith('cloudpickle'):
+            self._load_cloudpickle()
+        elif self._file_path.endswith('pickle'):
+            self._load_pickle()
+        else:
+            self._load_joblib()
+
+    def _load_pickle(self):
+        with open(self._file_path,"rb") as f:
+            self._pipeline = pickle.load(f)
+
+    def _load_cloudpickle(self):
+        with open(self._file_path,"rb") as f:
+            self._pipeline = cloudpickle.load(f)
+
+    def _load_joblib(self):
         self._pipeline = joblib.load(self._file_path)
 
     def transform(self, X: List) -> List:

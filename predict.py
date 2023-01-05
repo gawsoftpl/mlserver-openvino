@@ -92,7 +92,7 @@ response = requests.post(
     'http://localhost:8086/v2/models/mnist-onnx-openvino/versions/v0.1.0/infer',
     data = json.dumps(v2_request_gzip )
 )
-
+print(response.text)
 outputs = response.json()['outputs']
 
 # Decompress response

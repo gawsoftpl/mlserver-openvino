@@ -8,8 +8,10 @@ import onnx
 from mlserver.utils import get_model_uri
 from typing import List, Dict, Any
 from .transformer import Transformer
+
 # Dont remove this, This line load and auto register custom requests codecs
 from .codecs import NumpyGzipCodec, JSONGzippedBase64Codec
+
 
 WELLKNOWN_MODEL_FILENAMES = ["model.xml", "model.onnx"]
 
@@ -21,11 +23,15 @@ class OpenvinoRuntime(MLModel):
       self._settings, wellknown_filenames=WELLKNOWN_MODEL_FILENAMES
     )
 
+    # Should save model path before convert from onnx
+    self.model_dir = os.path.dirname(model_uri)
+
     # convert onnx file to openvino format
     if model_uri.endswith('.onnx'):
       model_uri = self.convert_onnx(model_uri)
 
-    # STart model openvino
+
+    # Start model openvino
     self.core = Core()
 
     if not os.path.exists(model_uri):
@@ -48,7 +54,7 @@ class OpenvinoRuntime(MLModel):
     for pipeline in self.settings.parameters.extra['transform']:
       transformers.append(
         Transformer(
-          pipeline['pipeline_file_path'],
+          os.path.join(self.model_dir, pipeline['pipeline_file_path']),
           pipeline['name'],
           pipeline['input_index']
         )
@@ -91,10 +97,10 @@ class OpenvinoRuntime(MLModel):
 
     return X
 
-  def _execute_pipeline(self, X:List) -> List:
+  def _execute_transform_pipeline(self, X:List) -> List:
+
     for tranformer_pipeline in self.transformers:
       X = tranformer_pipeline.transform(X)
-
     return X
 
   def _check_request(self, payload: InferenceRequest) -> InferenceResponse:

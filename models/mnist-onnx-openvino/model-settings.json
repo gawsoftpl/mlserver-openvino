@@ -8,13 +8,8 @@
             "transform": [
                 {
                     "name": "Prepare Metadata",
-                    "pipeline_file_path": "pipeline_meta.joblib",
+                    "pipeline_file_path": "./pipeline.cloudpickle",
                     "input_index": 0
-                },
-                {
-                    "name": "Prepare tags",
-                    "pipeline_file_path": "pipeline_tags.joblib",
-                    "input_index": 1
                 }
             ]
         }
