@@ -8,10 +8,12 @@ import onnx
 from mlserver.utils import get_model_uri
 from typing import List
 from .transformer import Transformer
-
+import time
+from mlserver.logging import get_logger
 # Dont remove this, This line load and auto register custom requests codecs
 from .codecs import NumpyGzipCodec, JSONGzippedBase64Codec
 
+logger = get_logger()
 
 WELLKNOWN_MODEL_FILENAMES = ["model.xml", "model.onnx"]
 
@@ -76,14 +78,19 @@ class OpenvinoRuntime(MLModel):
   def _get_model_outputs(self, payload: InferenceRequest) -> List[ResponseOutput]:
     for request_output in payload.outputs:
       try:
+
+        start_time = time.time()
         X = self._preprocessing(
           [self.decode(inp, default_codec=NumpyCodec) for inp in payload.inputs]
         )
+        logger.debug("Preprocessing elapsed time: " + str(time.time() - start_time))
 
         outputs = []
         output_layer_index = self.model_outputs.index(request_output.name)
 
+        start_time = time.time()
         y = self.compiled_model_int8(inputs=X)[self.compiled_model_int8.outputs[output_layer_index]]
+        logger.debug("Predict elapsed time: " + str(time.time() - start_time))
 
         output = self.encode(y, request_output, default_codec=NumpyCodec)
         outputs.append(output)
@@ -99,9 +106,9 @@ class OpenvinoRuntime(MLModel):
     return X
 
   def _execute_transform_pipeline(self, X:List) -> List:
-
     for tranformer_pipeline in self.transformers:
       X = tranformer_pipeline.transform(X)
+
     return X
 
   def _check_request(self, payload: InferenceRequest) -> InferenceResponse:

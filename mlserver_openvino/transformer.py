@@ -3,6 +3,10 @@ import joblib
 import cloudpickle
 import pickle
 import gzip
+from mlserver.logging import get_logger
+import time
+
+logger = get_logger()
 
 class Transformer:
     '''
@@ -17,6 +21,7 @@ class Transformer:
         self._load()
 
     def _load(self):
+        logger.debug(f"Loading transformer {self._file_path}")
         if 'cloudpickle' in self._file_path:
             self._load_cloudpickle()
         elif self._file_path.endswith('pickle'):
@@ -40,5 +45,7 @@ class Transformer:
         self._pipeline = joblib.load(self._file_path)
 
     def transform(self, X: List) -> List:
+        start_time = time.time()
         X[self._input_index] = self._pipeline.transform(X[self._input_index])
+        logger.debug(f"Transform {self._name} elapsed {time.time() - start_time}")
         return X
