@@ -111,3 +111,9 @@ spec:
 
 ## Transformers
 If you add transformer pipeline in extra properties you should dump code in same python version as execute mlserver
+
+
+## Tests
+```sh
+make test
+```
