@@ -9,10 +9,9 @@ def _convert_onnx_to_openvino(path_in, path_out):
 
 def convert_onnx_controller(path_in, path_out):
     if os.path.isdir(path_in):
-        abs_path = os.path.abspath(path_in)
-        save_path = os.path.dirname(abs_path)
         for file_path in glob.glob(os.path.join(path_in, '**/*.onnx'), recursive=True):
-            _convert_onnx_to_openvino(file_path, save_path)
+            base_path = os.path.dirname(file_path)
+            _convert_onnx_to_openvino(file_path, base_path)
     else:
         _convert_onnx_to_openvino(path_in, path_out)
 
