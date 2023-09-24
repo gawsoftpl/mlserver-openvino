@@ -2,6 +2,7 @@ import sys
 from mlserver_openvino import OpenvinoRuntime
 import os
 import getopt
+import glob
 
 def _convert_onnx_to_openvino(path_in, path_out):
     OpenvinoRuntime.convert_onnx(path_in, path_out)
