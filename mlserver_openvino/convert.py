@@ -6,7 +6,7 @@ import getopt
 def _convert_onnx_to_openvino(path_in, path_out):
     OpenvinoRuntime.convert_onnx(path_in, path_out)
 
-def convert_onnx(path_in, path_out):
+def convert_onnx_controller(path_in, path_out):
     if os.path.isdir(path_in):
         abs_path = os.path.abspath(path_in)
         save_path = os.path.dirname(abs_path)
@@ -24,4 +24,4 @@ if __name__ == '__main__':
     if len(args) > 2:
         path_out = args[2]
 
-    _convert_onnx_to_openvino(path_in, path_out)
+    convert_onnx_controller(path_in, path_out)
